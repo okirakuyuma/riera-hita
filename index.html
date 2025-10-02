@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日田市移住定住相談フォーム</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro', 'Meiryo', 'メイリオ', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c5282;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .privacy-notice {
+            background-color: #e6f3ff;
+            padding: 15px;
+            border-left: 4px solid #2c5282;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 5px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c5282;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2c5282;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .required {
+            color: #e53e3e;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #2c5282;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .inline-inputs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .inline-inputs > div {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .address-group {
+            display: grid;
+            grid-template-columns: 150px 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .address-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-group label,
+        .checkbox-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"],
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 5px;
+            width: auto;
+        }
+
+        .family-member {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+        }
+
+        .family-member-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c5282;
+        }
+
+        .add-button,
+        .remove-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .add-button {
+            background-color: #48bb78;
+            color: white;
+        }
+
+        .add-button:hover {
+            background-color: #38a169;
+        }
+
+        .remove-button {
+            background-color: #f56565;
+            color: white;
+        }
+
+        .remove-button:hover {
+            background-color: #e53e3e;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #2c5282;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #1a365d;
+        }
+
+        .agreement-box {
+            background-color: #fff5f5;
+            padding: 15px;
+            border: 1px solid #fc8181;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .agreement-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 3px;
+        }
+
+        .link {
+            color: #2c5282;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .survey-section {
+            background-color: #f0fff4;
+            border-left: 4px solid #48bb78;
+        }
+
+        #familyMembersContainer {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>日田市移住定住相談フォーム</h1>
+
+        <div class="privacy-notice">
+            お客様の個人情報は、日田市が行う移住定住に関する業務以外には使用いたしません。<br>
+            下記のフォームにご入力をお願いします。
+        </div>
+
+        <form id="immigrationForm">
+            <!-- Q1: 申請者情報 -->
+            <div class="section">
+                <div class="section-title">■Q1. 申請者</div>
+                
+                <div class="form-group">
+                    <label>氏名<span class="required">(必須)</span></label>
+                    <div class="inline-inputs">
+                        <div>
+                            <input type="text" name="lastName" placeholder="氏" required>
+                        </div>
+                        <div>
+                            <input type="text" name="firstName" placeholder="名" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>氏名フリガナ<span class="required">(必須)</span></label>
+                    <div class="inline-inputs">
+                        <div>
+                            <input type="text" name="lastNameKana" placeholder="氏フリガナ" required>
+                        </div>
+                        <div>
+                            <input type="text" name="firstNameKana" placeholder="名フリガナ" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>住所<span class="required">(必須)</span></label>
+                    <div class="address-group">
+                        <input type="text" name="postalCode" placeholder="郵便番号" required>
+                        <input type="text" name="prefecture" placeholder="都道府県" required>
+                        <input type="text" name="city" placeholder="市区町村" required>
+                        <input type="text" name="address" placeholder="番地" required>
+                    </div>
+                    <input type="text" name="building" placeholder="マンション・部屋番号" style="margin-top: 10px;">
+                </div>
+
+                <div class="form-group">
+                    <label>電話番号<span class="required">(必須)</span></label>
+                    <input type="tel" name="phone" placeholder="連絡がつきやすい番号をお願いします" required>
+                </div>
+
+                <div class="form-group">
+                    <label>メールアドレス</label>
+                    <input type="email" name="email" placeholder="example@email.com">
+                </div>
+            </div>
+
+            <!-- Q2: 移住人数 -->
+            <div class="section">
+                <div class="section-title">■Q2. 移住する人数は申請者を含めて何人ですか<span class="required">(必須)</span></div>
+                
+                <div class="form-group">
+                    <label>人数</label>
+                    <input type="number" id="immigrantCount" name="immigrantCount" min="1" placeholder="人" required>
+                    <p class="note">家族構成について教えてください。(本人含む) ※氏名、申請者からみた続柄、年齢、職業</p>
+                </div>
+            </div>
+
+            <!-- Q3: 申請者本人 -->
+            <div class="section">
+                <div class="section-title">■Q3. 申請者本人<span class="required">(必須)</span></div>
+                
+                <div class="form-group">
+                    <label>年齢<span class="required">(必須)</span></label>
+                    <input type="number" name="applicantAge" placeholder="歳" required>
+                </div>
+
+                <div class="form-group">
+                    <label>職業</label>
+                    <input type="text" name="applicantOccupation" placeholder="職業">
+                </div>
+            </div>
+
+            <!-- Q4: 家族 -->
+            <div class="section">
+                <div class="section-title">■Q4. 家族</div>
+                
+                <div id="familyMembersContainer"></div>
+                
+                <button type="button" class="add-button" onclick="addFamilyMember()">+ 家族を追加</button>
+            </div>
+
+            <!-- Q5: 出身地 -->
+            <div class="section">
+                <div class="section-title">■Q5. 出身地</div>
+                
+                <div class="inline-inputs">
+                    <div>
+                        <label>都道府県</label>
+                        <input type="text" name="birthPrefecture" placeholder="都道府県">
+                    </div>
+                    <div>
+                        <label>市区町村</label>
+                        <input type="text" name="birthCity" placeholder="市区町村">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q6: 移住希望時期 -->
+            <div class="section">
+                <div class="section-title">■Q6. 移住希望時期はありますか</div>
+                <textarea name="desiredTime" placeholder="移住希望時期をご記入ください"></textarea>
+            </div>
+
+            <!-- Q7: 日田市を選んだ理由 -->
+            <div class="section">
+                <div class="section-title">■Q7. 日田市を選んだ理由を教えてください</div>
+                <textarea name="reason" placeholder="日田市を選んだ理由をご記入ください"></textarea>
+            </div>
+
+            <!-- Q8: やりたいこと -->
+            <div class="section">
+                <div class="section-title">■Q8. 日田市でやりたいことはありますか</div>
+                <textarea name="plans" placeholder="日田市でやりたいことをご記入ください"></textarea>
+            </div>
+
+            <!-- Q9: 就業形態 -->
+            <div class="section">
+                <div class="section-title">■Q9. 移住後の就業形態を教えてください</div>
+                <textarea name="employmentType" placeholder="移住後の就業形態をご記入ください"></textarea>
+            </div>
+
+            <!-- Q10: 相談内容 -->
+            <div class="section">
+                <div class="section-title">■Q10. 相談内容</div>
+                <textarea name="consultation" placeholder="相談内容をご記入ください"></textarea>
+            </div>
+
+            <!-- Q11: 情報提供 -->
+            <div class="section">
+                <div class="section-title">■Q11. 日田市から移住関連情報の提供(郵送)を行ってもよろしいですか？</div>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="mailPermission" value="yes"> はい
+                    </label>
+                    <label>
+                        <input type="radio" name="mailPermission" value="no"> いいえ
+                    </label>
+                </div>
+            </div>
+
+            <!-- 空き家バンク -->
+            <div class="section">
+                <h2 style="color: #2c5282; margin-bottom: 15px;">空き家バンク利用者登録申請書</h2>
+                <p style="margin-bottom: 15px;">
+                    日田市空き家バンク事業に登録したいので、次の事項に同意し、日田市空き家バンク事業実施要綱第7条第1項の規定により申請します。
+                </p>
+                <p style="margin-bottom: 15px;">
+                    <strong>日田市空き家バンク事業実施要綱</strong><br>
+                    <a href="#" class="link">要綱はこちら</a>
+                </p>
+            </div>
+
+            <!-- Q12: 同意事項 -->
+            <div class="section">
+                <div class="section-title">■Q12. 次の事項にすべて同意がないと空き家バンク利用者登録はできません。確認のうえ、チェックをお願いします。</div>
+                
+                <div class="agreement-box">
+                    <div class="agreement-item">
+                        <label>
+                            <input type="checkbox" name="agreement1" required>
+                            1. 空き家を利用することとなった時は、日田市の自然環境、生活文化等に対する理解を深め、地域住民と協調して生活すること。
+                        </label>
+                    </div>
+                    <div class="agreement-item">
+                        <label>
+                            <input type="checkbox" name="agreement2" required>
+                            2. 日田市空き家バンク事業を通じて得た情報については、同事業の趣旨に沿って利用し、他の目的では使用しないこと。
+                        </label>
+                    </div>
+                    <div class="agreement-item">
+                        <label>
+                            <input type="checkbox" name="agreement3" required>
+                            3. 暴力団等の反社会的勢力又は反社会的勢力と関係を有する者でないこと。
+                        </label>
+                    </div>
+                    <div class="agreement-item">
+                        <label>
+                            <input type="checkbox" name="agreement4" required>
+                            4. 日田市空き家バンク事業実施要綱を遵守すること。(要綱をご一読ください)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q13: 利用目的 -->
+            <div class="section">
+                <div class="section-title">■Q13. 利用目的<span class="required">(必須)</span></div>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="usagePurpose" value="permanent" required> 定住
+                    </label>
+                    <label>
+                        <input type="radio" name="usagePurpose" value="villa"> 別荘
+                    </label>
+                    <label>
+                        <input type="radio" name="usagePurpose" value="dual"> 二地域居住
+                    </label>
+                    <label>
+                        <input type="radio" name="usagePurpose" value="other"> その他
+                    </label>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3 style="color: #2c5282; margin-bottom: 15px;">希望条件についてお答えください。</h3>
+
+                <!-- Q14: 希望物件 -->
+                <div class="form-group">
+                    <label>■Q14. 空き家バンクに登録された物件で希望物件があれば番号を入力してください。</label>
+                    <input type="text" name="propertyNumber" placeholder="№">
+                </div>
+
+                <!-- Q14(2): 希望地域 -->
+                <div class="form-group">
+                    <label>■Q14. 希望地域</label>
+                    <div class="checkbox-group" style="flex-direction: column;">
+                        <label><input type="checkbox" name="area" value="none"> 特になし</label>
+                        <label><input type="checkbox" name="area" value="north"> 市内北部(旧日田市)</label>
+                        <label><input type="checkbox" name="area" value="amase"> 天瀬地区</label>
+                        <label><input type="checkbox" name="area" value="oyama"> 大山地区</label>
+                        <label><input type="checkbox" name="area" value="maetsue"> 前津江地区</label>
+                        <label><input type="checkbox" name="area" value="nakatsue"> 中津江地区</label>
+                        <label><input type="checkbox" name="area" value="kamitsue"> 上津江地区</label>
+                        <label><input type="checkbox" name="area" value="other"> その他</label>
+                    </div>
+                </div>
+
+                <!-- Q15: 取引種別 -->
+                <div class="form-group">
+                    <label>■Q15. 取引種別</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="transactionType" value="rent"> 賃貸</label>
+                        <label><input type="radio" name="transactionType" value="purchase"> 購入</label>
+                    </div>
+                </div>
+
+                <!-- Q16: 間取り -->
+                <div class="form-group">
+                    <label>■Q16. 間取りの希望はありますか。</label>
+                    <textarea name="layout" placeholder="間取りの希望をご記入ください"></textarea>
+                </div>
+
+                <!-- Q17: 駐車場 -->
+                <div class="form-group">
+                    <label>■Q17. 駐車場は何台分必要ですか</label>
+                    <input type="number" name="parkingSpaces" placeholder="台" min="0">
+                </div>
+
+                <!-- Q18: ペット -->
+                <div class="form-group">
+                    <label>■Q18. ペットはいますか。</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="hasPet" value="yes" onchange="togglePetDetails(true)"> はい</label>
+                        <label><input type="radio" name="hasPet" value="no" onchange="togglePetDetails(false)"> いいえ</label>
+                    </div>
+                </div>
+
+                <!-- Q19: ペット詳細 -->
+                <div id="petDetails" style="display: none;">
+                    <div class="form-group">
+                        <label>■Q19. いると答えた方へ</label>
+                        <input type="text" name="petType" placeholder="ペットの種類" style="margin-bottom: 10px;">
+                        <input type="number" name="petCount" placeholder="何匹いますか" min="1" style="margin-bottom: 10px;">
+                        <div class="radio-group">
+                            <label><input type="radio" name="petLocation" value="indoor"> 屋内</label>
+                            <label><input type="radio" name="petLocation" value="outdoor"> 屋外</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q20: その他希望条件 -->
+                <div class="form-group">
+                    <label>■Q20. その他の希望条件があれば記入ください。</label>
+                    <textarea name="otherConditions" placeholder="その他の希望条件をご記入ください"></textarea>
+                </div>
+            </div>
+
+            <!-- アンケート -->
+            <div class="section survey-section">
+                <h2 style="color: #2c5282; margin-bottom: 15px;">利用者事前アンケート</h2>
+                <p style="margin-bottom: 15px;">
+                    空き家バンクをご利用いただく方に、ご希望に合った物件をご案内できるように、事前アンケートを実施しております。ご協力賜りますようお願いします。
+                </p>
+
+                <!-- Q21: 重要視する要件 -->
+                <div class="form-group">
+                    <label>■Q21. 空き家バンクを利用するにあたり、重要視する要件について、該当する項目とその内容にチェックをしてください。</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="priority" value="location" onchange="toggleSurveySection('location', this.checked)"> 場所</label>
+                        <label><input type="checkbox" name="priority" value="water" onchange="toggleSurveySection('water', this.checked)"> 水道</label>
+                        <label><input type="checkbox" name="priority" value="building" onchange="toggleSurveySection('building', this.checked)"> 建屋</label>
+                        <label><input type="checkbox" name="priority" value="floors" onchange="toggleSurveySection('floors', this.checked)"> 階数</label>
+                        <label><input type="checkbox" name="priority" value="onsen" onchange="toggleSurveySection('onsen', this.checked)"> 温泉</label>
+                        <label><input type="checkbox" name="priority" value="garden" onchange="toggleSurveySection('garden', this.checked)"> 菜園</label>
+                        <label><input type="checkbox" name="priority" value="other" onchange="toggleSurveySection('other', this.checked)"> その他</label>
+                    </div>
+                </div>
+
+                <!-- Q22-28: 条件付きアンケート -->
+                <div id="surveyLocation" class="form-group" style="display: none;">
+                    <label>■Q22. 場所</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="location" value="urban"> 市街地</label>
+                        <label><input type="radio" name="location" value="mountain"> 山の中</label>
+                    </div>
+                </div>
+
+                <div id="surveyWater" class="form-group" style="display: none;">
+                    <label>■Q23. 水道</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="water" value="municipal"> 市営水道</label>
+                        <label><input type="radio" name="water" value="well"> 井戸水</label>
+                        <label><input type="radio" name="water" value="spring"> 湧水</label>
+                    </div>
+                </div>
+
+                <div id="surveyBuilding" class="form-group" style="display: none;">
+                    <label>■Q24. 建屋</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="buildingType" value="kominka"> 古民家</label>
+                        <label><input type="radio" name="buildingType" value="other"> 古民家以外</label>
+                        <label><input type="radio" name="buildingType" value="villa"> 別荘</label>
+                    </div>
+                </div>
+
+                <div id="surveyFloors" class="form-group" style="display: none;">
+                    <label>■Q25. 階数</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="floors" value="single"> 平屋</label>
+                        <label><input type="radio" name="floors" value="any"> こだわらない</label>
+                    </div>
+                </div>
+
+                <div id="surveyOnsen" class="form-group" style="display: none;">
+                    <label>■Q26. 温泉</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="onsen" value="inside"> 宅内にほしい</label>
+                        <label><input type="radio" name="onsen" value="nearby"> 近隣</label>
+                    </div>
+                </div>
+
+                <div id="surveyGarden" class="form-group" style="display: none;">
+                    <label>■Q27. 菜園</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="garden" value="needed"> 必要</label>
+                        <label><input type="radio" name="garden" value="notNeeded"> 不要</label>
+                    </div>
+                </div>
+
+                <div id="surveyOther" class="form-group" style="display: none;">
+                    <label>■Q28. その他</label>
+                    <textarea name="surveyOther" placeholder="その他の要件をご記入ください"></textarea>
+                </div>
+
+                <!-- Q29: 学校規模 -->
+                <div class="form-group">
+                    <label>■Q29. お子様のいるご家庭にお尋ねします。学校規模について希望はありますか。</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="schoolSize" value="large"> 大人数</label>
+                        <label><input type="radio" name="schoolSize" value="small"> 少人数</label>
+                        <label><input type="radio" name="schoolSize" value="medium"> 中規模</label>
+                        <label><input type="radio" name="schoolSize" value="any"> こだわらない</label>
+                        <label><input type="radio" name="schoolSize" value="other"> その他</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">送信する</button>
+        </form>
+    </div>
+
+    <script>
+        let familyMemberCount = 0;
+
+        // 家族メンバー追加
+        function addFamilyMember() {
+            familyMemberCount++;
+            const container = document.getElementById('familyMembersContainer');
+            const memberDiv = document.createElement('div');
+            memberDiv.className = 'family-member';
+            memberDiv.id = `familyMember${familyMemberCount}`;
+            
+            memberDiv.innerHTML = `
+                <div class="family-member-title">家族 ${familyMemberCount}</div>
+                <div class="form-group">
+                    <label>氏名<span class="required">(必須)</span></label>
+                    <div class="inline-inputs">
+                        <div>
+                            <input type="text" name="familyLastName${familyMemberCount}" placeholder="氏" required>
+                        </div>
+                        <div>
+                            <input type="text" name="familyFirstName${familyMemberCount}" placeholder="名" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>氏名フリガナ<span class="required">(必須)</span></label>
+                    <div class="inline-inputs">
+                        <div>
+                            <input type="text" name="familyLastNameKana${familyMemberCount}" placeholder="氏フリガナ" required>
+                        </div>
+                        <div>
+                            <input type="text" name="familyFirstNameKana${familyMemberCount}" placeholder="名フリガナ" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>続柄<span class="required">(必須)</span></label>
+                    <input type="text" name="familyRelationship${familyMemberCount}" placeholder="例: 配偶者、子" required>
+                </div>
+                <div class="form-group">
+                    <label>年齢<span class="required">(必須)</span></label>
+                    <input type="number" name="familyAge${familyMemberCount}" placeholder="歳" required>
+                </div>
+                <div class="form-group">
+                    <label>職業</label>
+                    <input type="text" name="familyOccupation${familyMemberCount}" placeholder="職業">
+                </div>
+                <button type="button" class="remove-button" onclick="removeFamilyMember(${familyMemberCount})">この家族を削除</button>
+            `;
+            
+            container.appendChild(memberDiv);
+        }
+
+        // 家族メンバー削除
+        function removeFamilyMember(id) {
+            const element = document.getElementById(`familyMember${id}`);
+            if (element) {
+                element.remove();
+            }
+        }
+
+        // ペット詳細表示切り替え
+        function togglePetDetails(show) {
+            const petDetails = document.getElementById('petDetails');
+            petDetails.style.display = show ? 'block' : 'none';
+        }
+
+        // アンケートセクション表示切り替え
+        function toggleSurveySection(section, show) {
+            const sectionMap = {
+                'location': 'surveyLocation',
+                'water': 'surveyWater',
+                'building': 'surveyBuilding',
+                'floors': 'surveyFloors',
+                'onsen': 'surveyOnsen',
+                'garden': 'surveyGarden',
+                'other': 'surveyOther'
+            };
+            
+            const elementId = sectionMap[section];
+            if (elementId) {
+                const element = document.getElementById(elementId);
+                element.style.display = show ? 'block' : 'none';
+            }
+        }
+
+        // フォーム送信処理
+        document.getElementById('immigrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // 送信ボタンを無効化
+            const submitButton = this.querySelector('.submit-button');
+            const originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = '送信中...';
+
+            try {
+                // フォームデータ収集
+                const formData = new FormData(this);
+                const data = {};
+
+                for (let [key, value] of formData.entries()) {
+                    if (data[key]) {
+                        if (Array.isArray(data[key])) {
+                            data[key].push(value);
+                        } else {
+                            data[key] = [data[key], value];
+                        }
+                    } else {
+                        data[key] = value;
+                    }
+                }
+
+                // データ確認(開発環境のみ)
+                console.log('送信データ:', data);
+
+                // Netlify Functionにデータ送信
+                const response = await fetch('/.netlify/functions/submit-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert('フォームの送信が完了しました。\nご協力ありがとうございました。');
+                    // フォームをリセット
+                    this.reset();
+                    // 家族メンバーをクリア
+                    document.getElementById('familyMembersContainer').innerHTML = '';
+                    familyMemberCount = 0;
+                } else {
+                    throw new Error(result.message || 'フォームの送信に失敗しました');
+                }
+
+            } catch (error) {
+                console.error('送信エラー:', error);
+                alert('フォームの送信に失敗しました。\n時間をおいて再度お試しください。\n\nエラー: ' + error.message);
+            } finally {
+                // 送信ボタンを有効化
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
+            }
+        });
+    </script>
+</body>
+</html>

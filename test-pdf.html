@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF生成テスト</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c5282;
+        }
+        button {
+            background-color: #2c5282;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <h1>📄 PDF生成テスト</h1>
+
+    <div class="info">
+        <strong>💡 テスト内容:</strong><br>
+        サンプルフォームデータからPDFを生成し、ブラウザでダウンロードします。<br>
+        メール送信機能は環境変数が設定されている場合のみ動作します。
+    </div>
+
+    <button onclick="generatePDF()">📄 PDF生成 & ダウンロード</button>
+
+    <div id="result" style="display: none;"></div>
+
+    <script>
+        async function generatePDF() {
+            const btn = event.target;
+            const resultDiv = document.getElementById('result');
+
+            btn.disabled = true;
+            btn.textContent = 'PDF生成中...';
+            resultDiv.style.display = 'none';
+
+            try {
+                // サンプルデータ
+                const formData = {
+                    lastName: '山田',
+                    firstName: '太郎',
+                    lastNameKana: 'ヤマダ',
+                    firstNameKana: 'タロウ',
+                    postalCode: '877-0000',
+                    prefecture: '大分県',
+                    city: '日田市',
+                    address: '田島1-1-1',
+                    building: '日田マンション101',
+                    phone: '090-1234-5678',
+                    email: 'yamada@example.com',
+                    immigrantCount: '5',
+                    applicantAge: '35',
+                    applicantOccupation: '会社員（リモートワーク）',
+                    birthPrefecture: '東京都',
+                    birthCity: '世田谷区',
+                    desiredTime: '2026年4月頃',
+                    reason: '自然豊かな環境で子育てをしたい',
+                    plans: '家庭菜園を始めたい',
+                    employmentType: 'リモートワーク継続',
+                    consultation: '子育て支援制度について',
+                    mailPermission: 'yes',
+                    usagePurpose: 'permanent',
+                    propertyNumber: 'A-123',
+                    transactionType: 'rent',
+                    layout: '3LDK以上',
+                    parkingSpaces: '2',
+                    hasPet: 'no',
+                    // 家族データ
+                    familyLastName1: '山田',
+                    familyFirstName1: '花子',
+                    familyLastNameKana1: 'ヤマダ',
+                    familyFirstNameKana1: 'ハナコ',
+                    familyRelationship1: '配偶者',
+                    familyAge1: '33',
+                    familyOccupation1: 'パート',
+                    familyLastName2: '山田',
+                    familyFirstName2: '一郎',
+                    familyLastNameKana2: 'ヤマダ',
+                    familyFirstNameKana2: 'イチロウ',
+                    familyRelationship2: '子',
+                    familyAge2: '8',
+                    familyOccupation2: '小学生',
+                };
+
+                console.log('PDF生成リクエスト送信...');
+
+                const response = await fetch('/.netlify/functions/generate-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                resultDiv.style.display = 'block';
+
+                if (response.ok && result.success) {
+                    // Base64エンコードされたPDFをダウンロード
+                    const pdfBlob = base64ToBlob(result.pdf, 'application/pdf');
+                    const url = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `移住相談_${formData.lastName}${formData.firstName}_${new Date().toISOString().slice(0, 10)}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    resultDiv.className = 'success';
+                    resultDiv.innerHTML = `
+                        <h3>✅ PDF生成成功！</h3>
+                        <p><strong>ファイルサイズ:</strong> ${(result.size / 1024).toFixed(2)} KB</p>
+                        <p>PDFがダウンロードされました。</p>
+                        <p><small>※メール送信機能は環境変数が設定されている場合のみ動作します</small></p>
+                    `;
+                } else {
+                    throw new Error(result.message || 'PDF生成失敗');
+                }
+
+            } catch (error) {
+                console.error('エラー:', error);
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = `
+                    <h3>❌ PDF生成失敗</h3>
+                    <p>${error.message}</p>
+                    <p><small>Netlify本番環境でのみ動作します。ローカル環境ではChromiumが利用できないためエラーになります。</small></p>
+                `;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '📄 PDF生成 & ダウンロード';
+            }
+        }
+
+        // Base64をBlobに変換
+        function base64ToBlob(base64, contentType) {
+            const byteCharacters = atob(base64);
+            const byteArrays = [];
+
+            for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                const slice = byteCharacters.slice(offset, offset + 512);
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+
+            return new Blob(byteArrays, { type: contentType });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "hita-relocation-form",
+  "version": "1.0.0",
+  "description": "日田市移住定住相談フォーム - kintone連携",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build required for static site'",
+    "deploy": "netlify deploy --prod"
+  },
+  "keywords": [
+    "hita",
+    "relocation",
+    "kintone",
+    "netlify"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "dependencies": {
+    "@kintone/rest-api-client": "^5.0.0",
+    "@sparticuz/chromium": "^140.0.0",
+    "dotenv": "^17.2.3",
+    "nodemailer": "^7.0.6",
+    "puppeteer-core": "^24.23.0"
+  }
+}

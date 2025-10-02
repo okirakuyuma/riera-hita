@@ -1,0 +1,22 @@
+[build]
+  # 静的サイトなのでビルドコマンドは不要
+  command = "echo 'No build required'"
+  # 公開ディレクトリはプロジェクトルート
+  publish = "."
+  # Functionsディレクトリ
+  functions = "netlify/functions"
+
+# リダイレクト設定（現在は不要）
+
+[dev]
+  # ローカル開発用の設定
+  port = 8889
+  targetPort = 8889
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
