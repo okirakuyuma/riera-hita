@@ -717,6 +717,241 @@
             }
         }
 
+        // フォームデータを日本語キーに変換
+        function convertFormDataToJapanese(formData) {
+            const data = {};
+
+            // 基本情報のマッピング
+            const fieldMapping = {
+                'lastName': '氏（申請者）',
+                'firstName': '名（申請者）',
+                'lastNameKana': '氏フリガナ（申請者）',
+                'firstNameKana': '名フリガナ（申請者）',
+                'postalCode': '郵便番号',
+                'prefecture': '都道府県',
+                'city': '市区町村',
+                'address': '番地',
+                'building': '建物名・部屋番号',
+                'phone': '電話番号',
+                'email': 'メールアドレス',
+                'immigrantCount': '移住人数',
+                'applicantAge': '年齢（申請者）',
+                'applicantOccupation': '職業（申請者）',
+                'birthPrefecture': '出身都道府県',
+                'birthCity': '出身市区町村',
+                'desiredTime': '移住希望時期',
+                'reason': '選んだ理由',
+                'plans': 'やりたいこと',
+                'employmentType': '就業形態',
+                'consultation': '相談内容',
+                'agreement1': '同意1_地域協調',
+                'agreement2': '同意2_情報利用',
+                'agreement3': '同意3_反社会的勢力排除',
+                'agreement4': '同意4_要綱遵守',
+                'propertyNumber': '希望物件番号',
+                'layout': '間取り希望',
+                'parkingSpaces': '駐車場台数',
+                'petType': 'ペット種類',
+                'petCount': 'ペット数',
+                'otherConditions': 'その他希望条件',
+                'surveyOther': 'アンケートその他'
+            };
+
+            // 選択肢の値を日本語に変換
+            const valueMapping = {
+                'mailPermission': {
+                    'yes': 'はい',
+                    'no': 'いいえ'
+                },
+                'usagePurpose': {
+                    'permanent': '定住',
+                    'villa': '別荘',
+                    'dual': '二地域居住',
+                    'other': 'その他'
+                },
+                'area': {
+                    'none': '特になし',
+                    'north': '市内北部（旧日田市）',
+                    'amase': '天瀬地区',
+                    'oyama': '大山地区',
+                    'maetsue': '前津江地区',
+                    'nakatsue': '中津江地区',
+                    'kamitsue': '上津江地区',
+                    'other': 'その他'
+                },
+                'transactionType': {
+                    'rent': '賃貸',
+                    'purchase': '購入'
+                },
+                'hasPet': {
+                    'yes': 'はい',
+                    'no': 'いいえ'
+                },
+                'petLocation': {
+                    'indoor': '屋内',
+                    'outdoor': '屋外'
+                },
+                'priority': {
+                    'location': '場所',
+                    'water': '水道',
+                    'building': '建屋',
+                    'floors': '階数',
+                    'onsen': '温泉',
+                    'garden': '菜園',
+                    'other': 'その他'
+                },
+                'location': {
+                    'urban': '市街地',
+                    'mountain': '山の中'
+                },
+                'water': {
+                    'municipal': '市営水道',
+                    'well': '井戸水',
+                    'spring': '湧水'
+                },
+                'buildingType': {
+                    'kominka': '古民家',
+                    'other': '古民家以外',
+                    'villa': '別荘'
+                },
+                'floors': {
+                    'single': '平屋',
+                    'any': 'こだわらない'
+                },
+                'onsen': {
+                    'inside': '宅内にほしい',
+                    'nearby': '近隣'
+                },
+                'garden': {
+                    'needed': '必要',
+                    'notNeeded': '不要'
+                },
+                'schoolSize': {
+                    'large': '大人数',
+                    'small': '少人数',
+                    'medium': '中規模',
+                    'any': 'こだわらない',
+                    'other': 'その他'
+                }
+            };
+
+            // 配列フィールドの処理
+            const arrayFields = ['area', 'priority'];
+            const tempArrayData = {};
+
+            for (let [key, value] of formData.entries()) {
+                // 配列フィールドの場合
+                if (arrayFields.includes(key)) {
+                    if (!tempArrayData[key]) {
+                        tempArrayData[key] = [];
+                    }
+                    const convertedValue = valueMapping[key] && valueMapping[key][value] ? valueMapping[key][value] : value;
+                    tempArrayData[key].push(convertedValue);
+                }
+                // 家族情報の処理は後で行う
+                else if (key.startsWith('family')) {
+                    continue;
+                }
+                // 通常フィールドの処理
+                else {
+                    const japaneseKey = fieldMapping[key] || key;
+                    let convertedValue = value;
+
+                    // 値の変換
+                    if (valueMapping[key] && valueMapping[key][value]) {
+                        convertedValue = valueMapping[key][value];
+                    }
+
+                    // チェックボックスの場合はbooleanに変換
+                    if (key.startsWith('agreement')) {
+                        convertedValue = value === 'on';
+                    }
+
+                    // 数値型フィールドの変換
+                    if (['immigrantCount', 'applicantAge', 'parkingSpaces', 'petCount'].includes(key)) {
+                        convertedValue = value ? Number(value) : null;
+                    }
+
+                    data[japaneseKey] = convertedValue;
+                }
+            }
+
+            // 配列データを追加
+            if (tempArrayData['area']) {
+                data['希望地域'] = tempArrayData['area'];
+            }
+            if (tempArrayData['priority']) {
+                data['重要視する要件'] = tempArrayData['priority'];
+            }
+
+            // ラジオボタンフィールドの日本語キー設定
+            const radioFieldMapping = {
+                'mailPermission': '郵送情報提供許可',
+                'usagePurpose': '利用目的',
+                'transactionType': '取引種別',
+                'hasPet': 'ペット有無',
+                'petLocation': 'ペット飼育場所',
+                'location': '場所希望',
+                'water': '水道種別',
+                'buildingType': '建物タイプ',
+                'floors': '階数希望',
+                'onsen': '温泉希望',
+                'garden': '菜園希望',
+                'schoolSize': '学校規模希望'
+            };
+
+            for (let [engKey, jpKey] of Object.entries(radioFieldMapping)) {
+                if (data[engKey]) {
+                    data[jpKey] = data[engKey];
+                    delete data[engKey];
+                }
+            }
+
+            // 家族情報の処理
+            const familyMembers = [];
+            const familyData = {};
+
+            for (let [key, value] of formData.entries()) {
+                if (key.startsWith('family')) {
+                    const match = key.match(/^family(\w+?)(\d+)$/);
+                    if (match) {
+                        const fieldName = match[1];
+                        const memberIndex = match[2];
+
+                        if (!familyData[memberIndex]) {
+                            familyData[memberIndex] = {};
+                        }
+
+                        // フィールド名を日本語に変換
+                        const familyFieldMapping = {
+                            'LastName': '氏',
+                            'FirstName': '名',
+                            'LastNameKana': '氏フリガナ',
+                            'FirstNameKana': '名フリガナ',
+                            'Relationship': '続柄',
+                            'Age': '年齢',
+                            'Occupation': '職業'
+                        };
+
+                        const japaneseFieldName = familyFieldMapping[fieldName] || fieldName;
+                        const convertedValue = (fieldName === 'Age' && value) ? Number(value) : value;
+                        familyData[memberIndex][japaneseFieldName] = convertedValue;
+                    }
+                }
+            }
+
+            // 家族データを配列に変換
+            for (let memberId in familyData) {
+                familyMembers.push(familyData[memberId]);
+            }
+
+            if (familyMembers.length > 0) {
+                data['家族情報'] = familyMembers;
+            }
+
+            return data;
+        }
+
         // フォーム送信処理
         document.getElementById('immigrationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -730,18 +965,11 @@
             try {
                 // フォームデータ収集
                 const formData = new FormData(this);
-                const data = {};
 
+                // FormDataをオブジェクトに変換（英語フィールド名のまま）
+                const data = {};
                 for (let [key, value] of formData.entries()) {
-                    if (data[key]) {
-                        if (Array.isArray(data[key])) {
-                            data[key].push(value);
-                        } else {
-                            data[key] = [data[key], value];
-                        }
-                    } else {
-                        data[key] = value;
-                    }
+                    data[key] = value;
                 }
 
                 // データ確認(開発環境のみ)
@@ -759,7 +987,15 @@
                 const result = await response.json();
 
                 if (response.ok && result.success) {
-                    alert('フォームの送信が完了しました。\nご協力ありがとうございました。');
+                    let message = 'フォームの送信が完了しました。\nご協力ありがとうございました。';
+
+                    // PDF生成結果を表示
+                    if (result.pdfGenerated) {
+                        message += '\n\n※ 申請内容のPDFをkintoneに保存しました。';
+                    }
+
+                    alert(message);
+
                     // フォームをリセット
                     this.reset();
                     // 家族メンバーをクリア

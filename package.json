@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "netlify dev",
     "build": "echo 'No build required for static site'",
-    "deploy": "netlify deploy --prod"
+    "deploy": "netlify deploy --prod",
+    "add-pdf-field": "node scripts/add-pdf-field.js"
   },
   "keywords": [
     "hita",

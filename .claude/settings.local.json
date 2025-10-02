@@ -5,7 +5,8 @@
       "Bash(tree:*)",
       "Bash(cat:*)",
       "WebFetch(domain:cybozu.dev)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "mcp__chrome-devtools__navigate_page"
     ],
     "deny": [],
     "ask": []
